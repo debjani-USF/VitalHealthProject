@@ -1,0 +1,9 @@
+.vs/ 
+*.vsidx 
+bin/ 
+obj/ 
+node_modules/ 
+.env 
+*.log 
+.DS_Store 
+Thumbs.db 

@@ -1,0 +1,6 @@
+@VitaHealthAPI_HostAddress = http://localhost:5298
+
+GET {{VitaHealthAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
