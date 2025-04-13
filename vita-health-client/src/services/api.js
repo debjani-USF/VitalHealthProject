@@ -1,16 +1,42 @@
-//For API calls
-import axios from "axios";
+// src/services/api.js
 
-const BASE_URL = "https://localhost:7090/api"; // ASP.NET Core API
+// ✅ GET all appointments
+export const getAppointments = () => {
+  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+  return Promise.resolve({ data: appointments });
+};
 
-export const getAppointments = () =>
-  axios.get(`${BASE_URL}/appointments`);
+// ✅ CREATE a new appointment
+export const createAppointment = (data) => {
+  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 
-export const createAppointment = (data) =>
-  axios.post(`${BASE_URL}/appointments`, data);
+  // Assign a unique ID
+  const newAppointment = {
+    id: Date.now(), // unique
+    ...data,
+  };
 
-export const updateAppointment = (id, data) =>
-  axios.put(`${BASE_URL}/appointments/${id}`, data);
+  appointments.push(newAppointment);
+  localStorage.setItem("appointments", JSON.stringify(appointments));
+  return Promise.resolve(newAppointment);
+};
 
-export const deleteAppointment = (id) =>
-  axios.delete(`${BASE_URL}/appointments/${id}`);
+// ✅ UPDATE an existing appointment
+export const updateAppointment = (id, updatedData) => {
+  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+  const updated = appointments.map((appt) =>
+    appt.id === id ? { ...appt, ...updatedData, id } : appt // 💥 Ensure ID stays
+  );
+
+  localStorage.setItem("appointments", JSON.stringify(updated));
+  return Promise.resolve();
+};
+
+// ✅ DELETE an appointment
+export const deleteAppointment = (id) => {
+  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+  const filtered = appointments.filter((appt) => appt.id !== id);
+  localStorage.setItem("appointments", JSON.stringify(filtered));
+  return Promise.resolve();
+};
